@@ -83,10 +83,12 @@ namespace typing
 
         private void PrintStats()
         {
+            Console.ForegroundColor = ConsoleColor.White;
+
             Console.WriteLine("\n");
             Console.WriteLine($"TIME:       {TimeTaken} seconds");
             Console.WriteLine($"LENGTH:     {prompt.Length} characters");
-            Console.WriteLine($"WPM:        {(int)((prompt.Length / 5) / (TimeTaken / 60))}"); // WPM = Keystrokes / 5 / Time taken (minutes)
+            Console.WriteLine($"WPM:        {(int)(((KeystrokeCount - Misinputs) / 5) / (TimeTaken / 60))}"); // WPM = Keystrokes / 5 / Time taken (minutes)
             Console.WriteLine($"RAW WPM:    {(int)((KeystrokeCount / 5) / (TimeTaken / 60))}"); // passing to (int) removes decimal places
             Console.WriteLine($"ACCURACY:   {(double)((int)((KeystrokeCount - Misinputs) / KeystrokeCount * 10000)) / 100}%"); // 2 decimal places
             Console.WriteLine($"MISINPUTS:  {Misinputs}/{KeystrokeCount}");
