@@ -4,7 +4,7 @@ using System.Text;
 
 namespace typing
 {
-    class PersonalBest
+    class Results
     {
 
     }
