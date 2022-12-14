@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Diagnostics;
 
 namespace typing
 {
@@ -26,15 +27,14 @@ namespace typing
             prompt = _prompt;
             timer = _timer;
             ghost = _ghost;
-
-            RunTest();
-            PrintStats();
         }
 
-        private void RunTest()
+        public void RunTest()
         {
             Console.Clear();
-            DateTimeOffset StartTime = DateTime.Now;
+
+            Stopwatch stopwatch = new Stopwatch();
+
             (int Left, int Top) CursorStart = Console.GetCursorPosition();
 
             if (ghost)
@@ -54,13 +54,16 @@ namespace typing
 
             var regex = new Regex(@"[\x00 -\x7F]"); // valid ascii
 
-            while (ContinueTest)
+            while (ContinueTest && stopwatch.Elapsed.TotalSeconds < timer)
             {
                 // TODO: add space condition for extra / too few letters per word (maybe)
-                // TODO: add timer & timed end condition
-                // TODO: fix backspace going up a line
+                // TODO: fix timer end on actual elapsed time
+                // TODO: fix backspace going up a line (idk it seems to work for some reason now)
+                // TODO: add redraw on screen size change (or just end the test)
 
                 ConsoleKeyInfo keystroke = Console.ReadKey(true);
+
+                stopwatch.Start();
 
                 KeystrokeCount++;
 
@@ -99,11 +102,13 @@ namespace typing
                 if (currentIndex == prompt.Length) { ContinueTest = false; } // end on prompt finish
             }
 
-            DateTimeOffset EndTime = DateTime.Now;
+            TimeTaken = stopwatch.Elapsed.TotalSeconds; // / 1000; //(EndTime - StartTime) / 1000;
+
+            stopwatch.Stop();
 
             CountThroughPrompt = currentIndex; // use this instead of prompt.Length in case test is cut short or timed
 
-            TimeTaken = (double)(EndTime.ToUnixTimeMilliseconds() - StartTime.ToUnixTimeMilliseconds()) / 1000;
+            PrintStats();
         }
 
         private void PrintStats() // TODO: get PB results and compare / update
