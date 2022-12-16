@@ -4,7 +4,6 @@ class Program
 {
     static void Main(string[] args)
     {
-        // TODO: main menu
         // TODO: handle args
         // TODO: interactive settings menu
         // TODO: default settings .conf file
