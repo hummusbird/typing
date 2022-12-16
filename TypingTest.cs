@@ -13,6 +13,7 @@ namespace typing
         readonly string prompt;         // for length tests 
         readonly int timer;             // for timed tests
         readonly bool ghost;            // prompt printing setting
+        readonly bool autocorrect;      // when incorrect char entered, show correct char in red
 
         List<char> UserKeystrokes = new List<char>(); // TODO: make keystroke object containing timestamp + char for more detailed stats
 
@@ -22,11 +23,12 @@ namespace typing
         private int CountThroughPrompt; // keystrokes through the prompt, ignoring misinputs
         private double Misinputs;       // incorrect keystrokes
 
-        public TypingTest(string _prompt, int _timer, bool _ghost)
+        public TypingTest(string _prompt, int _timer, bool _ghost, bool _autocorrect)
         {
             prompt = _prompt;
             timer = _timer;
             ghost = _ghost;
+            autocorrect = _autocorrect;
         }
 
         public void RunTest()
@@ -92,7 +94,7 @@ namespace typing
                     else
                     { // TODO: flag for whether keystroke or prompt is displayed
                         Console.ForegroundColor = ConsoleColor.Red; // misinput
-                        Console.Write(prompt[currentIndex]); // write invalid char
+                        Console.Write(autocorrect ? prompt[currentIndex] : keystroke.KeyChar.ToString()); // write red char on incorrect keystroke, and "correct" char if autocorrect
                         Misinputs++;
                     }
 
