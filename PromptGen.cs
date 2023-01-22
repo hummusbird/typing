@@ -6,9 +6,19 @@ namespace typing
 {
     static class PromptGen
     {
-        public static string GenerateRandomFromDictionary(int words)
+        public static string GenerateRandomPromptFromWordlist(int length, string wordlist = "wordlist_10000.txt")
         {
-            return "g";
+            var rand = new Random();
+
+            string[] words = System.IO.File.ReadAllLines(wordlist);
+            string output = "";
+
+            for (int i = 0; i < length; i++)
+            {
+                output += words[rand.Next(10000)] + " ";
+            }
+
+            return output.Trim();
         }
     }
 }
