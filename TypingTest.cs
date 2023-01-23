@@ -31,6 +31,54 @@ namespace typing
             autocorrect = _autocorrect;
         }
 
+        public void InputProc()
+        {
+            var regex = new Regex(@"[\x00 -\x7F]"); // valid ascii
+
+            bool ContinueTest = true;
+
+            while (ContinueTest)
+            {
+                ConsoleKeyInfo keystroke = Console.ReadKey(true);
+
+                KeystrokeCount++;
+
+                if (keystroke.Key == ConsoleKey.Enter) { } // strip enter
+                else if (keystroke.Key == ConsoleKey.Tab) { } // strip tab
+
+                else if (keystroke.Key == ConsoleKey.Backspace) // special condition for backspace (TODO: add modifier support later)
+                {
+                    if (CountThroughPrompt > 0)
+                    {
+                        CountThroughPrompt--;
+                        Console.ForegroundColor = ConsoleColor.DarkGray;
+                        Console.Write("\b" + (ghost ? prompt[CountThroughPrompt] : " ") + "\b");
+                    }
+                }
+
+                else if (keystroke.Key == ConsoleKey.Escape) { ContinueTest = false; } // end on ESC
+
+                else if (regex.IsMatch(keystroke.KeyChar.ToString())) // check if input matches regex
+                {
+                    if (keystroke.KeyChar.ToString() == prompt[CountThroughPrompt].ToString()) // check for misinputs
+                    {
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.Write(keystroke.KeyChar.ToString()); // write char
+                    }
+                    else
+                    { // TODO: flag for whether keystroke or prompt is displayed
+                        Console.ForegroundColor = ConsoleColor.Red; // misinput
+                        Console.Write(autocorrect ? prompt[CountThroughPrompt] : keystroke.KeyChar.ToString()); // write red char on incorrect keystroke, and "correct" char if autocorrect
+                        Misinputs++;
+                    }
+
+                    CountThroughPrompt++;
+                }
+
+                if (CountThroughPrompt == prompt.Length) { ContinueTest = false; } // end on prompt finish
+            }
+        }
+
         public void RunTest()
         {
             Console.Clear();
@@ -51,64 +99,23 @@ namespace typing
                 Console.WriteLine(prompt);
             }
 
-            int currentIndex = 0;
-            bool ContinueTest = true;
+            // TODO: add space condition for extra / too few letters per word (maybe)
+            // TODO: fix timer end on actual elapsed time
+            // TODO: fix backspace going up a line (idk it seems to work for some reason now)
+            // TODO: add redraw on screen size change (or just end the test)
 
-            var regex = new Regex(@"[\x00 -\x7F]"); // valid ascii
+            Thread t = new Thread(new ThreadStart(InputProc));
 
-            while (ContinueTest && stopwatch.Elapsed.TotalSeconds < timer)
-            {
-                // TODO: add space condition for extra / too few letters per word (maybe)
-                // TODO: fix timer end on actual elapsed time
-                // TODO: fix backspace going up a line (idk it seems to work for some reason now)
-                // TODO: add redraw on screen size change (or just end the test)
+            t.Start();
+            stopwatch.Start();
 
-                ConsoleKeyInfo keystroke = Console.ReadKey(true);
+            Thread.Sleep((int)timer * 1000);
 
-                stopwatch.Start();
+            t.Interrupt();
 
-                KeystrokeCount++;
-
-                if (keystroke.Key == ConsoleKey.Enter) { } // strip enter
-                else if (keystroke.Key == ConsoleKey.Tab) { } // strip tab
-
-                else if (keystroke.Key == ConsoleKey.Backspace) // special condition for backspace (TODO: add modifier support later)
-                {
-                    if (currentIndex > 0)
-                    {
-                        currentIndex--;
-                        Console.ForegroundColor = ConsoleColor.DarkGray;
-                        Console.Write("\b" + (ghost ? prompt[currentIndex] : " ") + "\b");
-                    }
-                }
-
-                else if (keystroke.Key == ConsoleKey.Escape) { ContinueTest = false; } // end on ESC
-
-                else if (regex.IsMatch(keystroke.KeyChar.ToString())) // check if input matches regex
-                {
-                    if (keystroke.KeyChar.ToString() == prompt[currentIndex].ToString()) // check for misinputs
-                    {
-                        Console.ForegroundColor = ConsoleColor.White;
-                        Console.Write(keystroke.KeyChar.ToString()); // write char
-                    }
-                    else
-                    { // TODO: flag for whether keystroke or prompt is displayed
-                        Console.ForegroundColor = ConsoleColor.Red; // misinput
-                        Console.Write(autocorrect ? prompt[currentIndex] : keystroke.KeyChar.ToString()); // write red char on incorrect keystroke, and "correct" char if autocorrect
-                        Misinputs++;
-                    }
-
-                    currentIndex++;
-                }
-
-                if (currentIndex == prompt.Length) { ContinueTest = false; } // end on prompt finish
-            }
-
-            TimeTaken = stopwatch.Elapsed.TotalSeconds; // / 1000; //(EndTime - StartTime) / 1000;
+            TimeTaken = stopwatch.Elapsed.TotalSeconds;
 
             stopwatch.Stop();
-
-            CountThroughPrompt = currentIndex; // use this instead of prompt.Length in case test is cut short or timed
 
             PrintStats();
         }
