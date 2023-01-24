@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
 
@@ -8,6 +5,8 @@ namespace typing
 {
     internal class TypingTest
     {
+        bool ContinueTest = true;
+
         // possibly split this into two objects, one for timed one for length
 
         readonly string prompt;         // for length tests 
@@ -35,8 +34,6 @@ namespace typing
         {
             var regex = new Regex(@"[\x00 -\x7F]"); // valid ascii
 
-            bool ContinueTest = true;
-
             while (ContinueTest)
             {
                 ConsoleKeyInfo keystroke = Console.ReadKey(true);
@@ -44,6 +41,7 @@ namespace typing
                 KeystrokeCount++;
 
                 if (keystroke.Key == ConsoleKey.Enter) { } // strip enter
+
                 else if (keystroke.Key == ConsoleKey.Tab) { } // strip tab
 
                 else if (keystroke.Key == ConsoleKey.Backspace) // special condition for backspace (TODO: add modifier support later)
@@ -100,7 +98,7 @@ namespace typing
             }
 
             // TODO: add space condition for extra / too few letters per word (maybe)
-            // TODO: fix timer end on actual elapsed time
+            // TODO: fix end on prompt finish
             // TODO: fix backspace going up a line (idk it seems to work for some reason now)
             // TODO: add redraw on screen size change (or just end the test)
 
@@ -110,6 +108,8 @@ namespace typing
             stopwatch.Start();
 
             Thread.Sleep((int)timer * 1000);
+
+            ContinueTest = false;
 
             t.Interrupt();
 
