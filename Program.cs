@@ -4,9 +4,10 @@ class Program
 {
     static void Main(string[] args)
     {
-        string prompt = PromptGen.GenerateRandomPromptFromWordlist(10); // "the quick brown fox jumped over the lazy dog, before going on a shopping trip to Tesco's. The dog bought some cheese.";
+        int length = 10;
+        string prompt = PromptGen.GenerateRandomPromptFromWordlist(length); // "the quick brown fox jumped over the lazy dog, before going on a shopping trip to Tesco's. The dog bought some cheese.";
         int timer = 10;
-        bool ghost = true;
+        bool ghost = false;
         bool autocorrect = false;
 
         foreach (string arg in args)
@@ -15,19 +16,36 @@ class Program
 
             switch (arg)
             {
-                case "-t": // timer length
+                case "--timer": // timer length
+                case "-t":
                     if (args.Length >= pos + 2)
                     {
                         timer = int.Parse(args[pos + 1]);
                     }
                     break;
+
+                case "--length": // random wordgen length
+                case "-l":
+                    if (args.Length >= pos + 2)
+                    {
+                        timer = int.Parse(args[pos + 1]);
+                    }
+                    break;
+
+                case "--ghost": // whether prompt should be above or behind user input
+                case "-g":
+                    ghost = !ghost;
+                    break;
+
+                case "--autocorrect": // whether incorrect keystrokes should be shown correctly or not
+                case "-a":
+                    autocorrect = !autocorrect;
+                    break;
             }
         }
 
-
         // TODO: interactive settings menu
         // TODO: default settings .conf file
-        // TODO: prompt gen
 
         TypingTest newtest = new(@prompt, timer, ghost, autocorrect);
 
