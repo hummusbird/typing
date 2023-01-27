@@ -56,6 +56,8 @@ namespace typing
 
             bool ContinueTest = true;
 
+            stopwatch.Start();
+
             while (ContinueTest && stopwatch.Elapsed.TotalSeconds < timer)
             {
                 if (Console.KeyAvailable)
