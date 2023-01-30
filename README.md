@@ -30,7 +30,7 @@ set a time limit
 set a word length limit (defaults to 25 with --random)
 ```
 
-### todo
+## todo
 
 - add --file flag for wordlists / prompts
 
