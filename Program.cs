@@ -75,6 +75,15 @@ class Program
             test.RunTest();
 
             Results.PrintStats(test);
+
+            if (!incognito) { Results.SaveStats(test); }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Gray;
+                Console.WriteLine("\nincognito enabled - not saving results for this session!");
+                Console.ForegroundColor = ConsoleColor.White;
+            }
+
         }
 
         Thread.Sleep(500);

@@ -16,10 +16,10 @@ namespace typing
 
         // statistics
 
-        private double TimeTaken;       // seconds taken
-        private double KeystrokeCount;  // total keystrokes
-        private int CountThroughPrompt; // keystrokes through the prompt, ignoring misinputs
-        private double Misinputs;       // incorrect keystrokes
+        public double TimeTaken { get; private set; }          // seconds taken
+        public double KeystrokeCount { get; private set; }     // total keystrokes
+        public int CountThroughPrompt { get; private set; }    // keystrokes through the prompt, ignoring misinputs
+        public double Misinputs { get; private set; }          // incorrect keystrokes
 
         public TypingTest(string _prompt, int _timer, bool _ghost, bool _autocorrect)
         {
@@ -28,14 +28,6 @@ namespace typing
             ghost = _ghost;
             autocorrect = _autocorrect;
         }
-
-        public double GetTimeTaken() { return TimeTaken; }
-
-        public double GetKeystrokeCount() { return KeystrokeCount; }
-
-        public int GetCountThroughPrompt() { return CountThroughPrompt; }
-
-        public double GetMisinputs() { return Misinputs; }
 
         public void RunTest()
         {

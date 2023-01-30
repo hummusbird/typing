@@ -9,21 +9,18 @@ namespace typing
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.White;
 
-            double TimeTaken = test.GetTimeTaken();
-            double KeystrokeCount = test.GetKeystrokeCount();
-            int CountThroughPrompt = test.GetCountThroughPrompt();
-            double Misinputs = test.GetMisinputs();
-
-            Console.WriteLine($"TIME:       {TimeTaken} seconds");
-            Console.WriteLine($"LENGTH:     {CountThroughPrompt} characters");
-            Console.WriteLine($"WPM:        {(int)(((KeystrokeCount - Misinputs) / 5) / (TimeTaken / 60))}"); // WPM = (Keystrokes / 5) / Time taken (minutes)
-            Console.WriteLine($"RAW WPM:    {(int)((KeystrokeCount / 5) / (TimeTaken / 60))}"); // passing to (int) removes decimal places
-            Console.WriteLine($"ACCURACY:   {(double)((int)((KeystrokeCount - Misinputs) / KeystrokeCount * 10000)) / 100}%"); // 2 decimal places
-            Console.WriteLine($"MISINPUTS:  {Misinputs}/{KeystrokeCount}");
+            Console.WriteLine($"TIME:       {test.TimeTaken} seconds");
+            Console.WriteLine($"LENGTH:     {test.CountThroughPrompt} characters");
+            Console.WriteLine($"WPM:        {(int)(((test.KeystrokeCount - test.Misinputs) / 5) / (test.TimeTaken / 60))}"); // WPM = (Keystrokes / 5) / Time taken (minutes)
+            Console.WriteLine($"RAW WPM:    {(int)((test.KeystrokeCount / 5) / (test.TimeTaken / 60))}"); // passing to (int) removes decimal places
+            Console.WriteLine($"ACCURACY:   {(double)((int)((test.KeystrokeCount - test.Misinputs) / test.KeystrokeCount * 10000)) / 100}%"); // 2 decimal places
+            Console.WriteLine($"MISINPUTS:  {test.Misinputs}/{test.KeystrokeCount}");
         }
 
         public static void SaveStats(TypingTest test)
         {
+            Console.WriteLine("Saving results...");
+
 
         }
 
