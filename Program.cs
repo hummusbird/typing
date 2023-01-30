@@ -20,33 +20,16 @@ class Program
                 case "--random":
                 case "-r":
                     random = true;
-                    if (length <= 0) { length = 10; }
-                    prompt = PromptGen.GenerateRandomPromptFromWordlist(length);
                     break;
 
                 case "--timer": // timer length
                 case "-t":
-                    if (args.Length >= pos + 2)
-                    {
-                        timer = int.Parse(args[pos + 1]);
-                    }
+                    if (args.Length >= pos + 2) { timer = int.Parse(args[pos + 1]); }
                     break;
 
                 case "--length": // random wordgen length
                 case "-l":
-                    if (args.Length >= pos + 2)
-                    {
-                        length = int.Parse(args[pos + 1]);
-
-                        if (random)
-                        {
-                            prompt = PromptGen.GenerateRandomPromptFromWordlist(length);
-                        }
-                        else
-                        {
-                            prompt = PromptGen.TrimPromptToLength(prompt, length);
-                        }
-                    }
+                    if (args.Length >= pos + 2) { length = int.Parse(args[pos + 1]); }
                     break;
 
                 case "--ghost": // whether prompt should be above or behind user input
@@ -61,13 +44,14 @@ class Program
 
                 case "--prompt":
                 case "-p":
-                    if (args.Length >= pos + 2)
-                    {
-                        prompt = PromptGen.ExtractPromptFromArgs(args, length);
-                    }
+                    if (args.Length >= pos + 2) { prompt = PromptGen.ExtractPromptFromArgs(args); }
                     break;
             }
         }
+
+        // ensures correct length even if length is defined after prompt
+        if (random) { prompt = PromptGen.GenerateRandomPromptFromWordlist(length); }
+        else { prompt = PromptGen.TrimPromptToLength(prompt, length); }
 
         // TODO: interactive settings menu
         // TODO: default settings .conf file
