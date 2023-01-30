@@ -28,6 +28,11 @@ namespace typing
             return args[pos + 1];
         }
 
+        public static string ExtractPromptFromFile(string filename)
+        {
+            return filename;
+        }
+
         public static string TrimPromptToLength(string in_prompt, int length)
         {
             string[] words = in_prompt.Split(" ");

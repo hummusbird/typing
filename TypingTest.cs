@@ -15,6 +15,7 @@ namespace typing
         List<char> UserKeystrokes = new List<char>(); // TODO: make keystroke object containing timestamp + char for more detailed stats
 
         // statistics
+
         private double TimeTaken;       // seconds taken
         private double KeystrokeCount;  // total keystrokes
         private int CountThroughPrompt; // keystrokes through the prompt, ignoring misinputs
@@ -27,6 +28,14 @@ namespace typing
             ghost = _ghost;
             autocorrect = _autocorrect;
         }
+
+        public double GetTimeTaken() { return TimeTaken; }
+
+        public double GetKeystrokeCount() { return KeystrokeCount; }
+
+        public int GetCountThroughPrompt() { return CountThroughPrompt; }
+
+        public double GetMisinputs() { return Misinputs; }
 
         public void RunTest()
         {
@@ -51,6 +60,7 @@ namespace typing
             // TODO: add space condition for extra / too few letters per word (maybe)
             // TODO: fix backspace going up a line (idk it seems to work for some reason now)
             // TODO: add redraw on screen size change (or just end the test)
+            // TODO: fix windows colour change on exit
 
             var regex = new Regex(@"[\x00 -\x7F]"); // valid ascii
 
@@ -108,21 +118,6 @@ namespace typing
             TimeTaken = stopwatch.Elapsed.TotalSeconds;
 
             stopwatch.Stop();
-
-            PrintStats();
-        }
-
-        private void PrintStats() // TODO: get PB results and compare / update
-        {
-            Console.Clear();
-            Console.ForegroundColor = ConsoleColor.White;
-
-            Console.WriteLine($"TIME:       {TimeTaken} seconds");
-            Console.WriteLine($"LENGTH:     {CountThroughPrompt} characters");
-            Console.WriteLine($"WPM:        {(int)(((KeystrokeCount - Misinputs) / 5) / (TimeTaken / 60))}"); // WPM = (Keystrokes / 5) / Time taken (minutes)
-            Console.WriteLine($"RAW WPM:    {(int)((KeystrokeCount / 5) / (TimeTaken / 60))}"); // passing to (int) removes decimal places
-            Console.WriteLine($"ACCURACY:   {(double)((int)((KeystrokeCount - Misinputs) / KeystrokeCount * 10000)) / 100}%"); // 2 decimal places
-            Console.WriteLine($"MISINPUTS:  {Misinputs}/{KeystrokeCount}");
         }
     }
 }

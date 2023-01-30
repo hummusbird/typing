@@ -10,6 +10,7 @@ class Program
         int timer = 0;
         bool ghost = false;
         bool autocorrect = false;
+        bool incognito = false;
 
         foreach (string arg in args)
         {
@@ -32,6 +33,11 @@ class Program
                     if (args.Length >= pos + 2) { length = int.Parse(args[pos + 1]); }
                     break;
 
+                case "--incognito": // completely disable saving of scores
+                case "-i":
+                    incognito = !incognito;
+                    break;
+
                 case "--ghost": // whether prompt should be above or behind user input
                 case "-g":
                     ghost = !ghost;
@@ -46,6 +52,11 @@ class Program
                 case "-p":
                     if (args.Length >= pos + 2) { prompt = PromptGen.ExtractPromptFromArgs(args); }
                     break;
+
+                case "--file": // load prompt from file
+                case "-f":
+                    if (args.Length >= pos + 2) { prompt = PromptGen.ExtractPromptFromFile(args[pos + 1]); }
+                    break;
             }
         }
 
@@ -56,10 +67,15 @@ class Program
         // TODO: interactive settings menu
         // TODO: default settings .conf file
 
-        TypingTest newtest = new(prompt, timer, ghost, autocorrect);
+        TypingTest test = new(prompt, timer, ghost, autocorrect);
 
         if (String.IsNullOrEmpty(prompt)) { Console.WriteLine("Prompt cannot be empty."); }
-        else { newtest.RunTest(); }
+        else
+        {
+            test.RunTest();
+
+            Results.PrintStats(test);
+        }
 
         Thread.Sleep(500);
         Console.Write("\nPress any key to continue");
