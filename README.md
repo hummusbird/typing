@@ -29,6 +29,10 @@ shows the correct character you should have typed, instead of what you did type
 
 you type overtop the prompt, instead of below
 
+--incognito
+
+disables saving of scores and results
+
 --random
 
 generates a random prompt from a wordlist

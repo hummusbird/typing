@@ -7,8 +7,8 @@ namespace typing
     {
         // possibly split this into two objects, one for timed one for length
 
-        readonly string prompt;         // for length tests 
-        readonly int timer;             // for timed tests
+        public readonly string prompt;         // for length tests 
+        public readonly int timer;             // for timed tests
         readonly bool ghost;            // prompt printing setting
         readonly bool autocorrect;      // when incorrect char entered, show correct char in red
 

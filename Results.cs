@@ -1,3 +1,5 @@
+using Newtonsoft.Json;
+
 namespace typing
 {
     static class Results
@@ -19,12 +21,25 @@ namespace typing
 
         public static void SaveStats(TypingTest test)
         {
-            Console.WriteLine("Saving results...");
+            Console.WriteLine("\nSaving results...");
 
+            string filename = DateTime.Now.ToString().Replace("/", "-") + ".json";
 
+            if (!Directory.Exists("typing-results")) { Directory.CreateDirectory("typing-results"); }
+
+            using (StreamWriter SW = new StreamWriter("typing-results/" + filename))
+            {
+                SW.WriteLine(JsonConvert.SerializeObject(test, Formatting.Indented));
+                Console.WriteLine($"{filename} saved!");
+            }
         }
 
         public static void CompareAgainstPB(TypingTest test)
+        {
+
+        }
+
+        public static void PrintCoolInformationMessage()
         {
 
         }
