@@ -28,7 +28,7 @@ namespace typing
             return args[pos + 1];
         }
 
-        public static string ExtractPromptFromFile(string filename)
+        public static string ExtractPromptFromFile(string filename) // TODO
         {
             return filename;
         }
