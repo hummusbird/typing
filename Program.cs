@@ -18,7 +18,7 @@ class Program
 
             switch (arg)
             {
-                case "--random":
+                case "--random": // generate random words from wordlist_10000.txt
                 case "-r":
                     random = true;
                     break;
@@ -48,7 +48,7 @@ class Program
                     autocorrect = !autocorrect;
                     break;
 
-                case "--prompt":
+                case "--prompt": // load prompt from arg
                 case "-p":
                     if (args.Length >= pos + 2) { prompt = PromptGen.ExtractPromptFromArgs(args); }
                     break;
@@ -59,6 +59,8 @@ class Program
                     break;
             }
         }
+
+        // TODO: loop from here to bottom  
 
         // ensures correct length even if length is defined after prompt
         if (random) { prompt = PromptGen.GenerateRandomPromptFromWordlist(length); }
@@ -76,14 +78,13 @@ class Program
 
             Results.PrintStats(test);
 
-            if (!incognito) { Results.SaveStats(test); }
+            if (!incognito) { Results.SaveStats(test); } // do not save results if -i arg set
             else
             {
                 Console.ForegroundColor = ConsoleColor.DarkGray;
                 Console.WriteLine("\nincognito enabled - no results saved");
                 Console.ForegroundColor = ConsoleColor.White;
             }
-
         }
 
         Console.Write("\nPress any key to continue");

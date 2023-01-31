@@ -4,8 +4,6 @@ namespace typing
 {
     static class Results
     {
-        // TODO: decide on order to run these, and whether they should call eachother or all be called from Program.cs
-
         public static void PrintStats(TypingTest test)
         {
             Console.Clear();
@@ -25,9 +23,9 @@ namespace typing
 
             string filename = DateTime.Now.ToString().Replace("/", "-") + ".json";
 
-            if (!Directory.Exists("typing-results")) { Directory.CreateDirectory("typing-results"); }
+            if (!Directory.Exists("typing-results")) { Directory.CreateDirectory("typing-results"); } // create results folder if one doesn't exist
 
-            using (StreamWriter SW = new StreamWriter("typing-results/" + filename))
+            using (StreamWriter SW = new StreamWriter("typing-results/" + filename)) // save the test under the current date & time
             {
                 SW.WriteLine(JsonConvert.SerializeObject(test, Formatting.Indented));
                 Console.WriteLine($"{filename} saved!");
@@ -36,12 +34,23 @@ namespace typing
 
         public static void CompareAgainstPB(TypingTest test)
         {
-
+            // TODO: iterate through all files & find best scores
+            // TODO: use filename to compare
         }
 
         public static void PrintCoolInformationMessage()
         {
+            // improvement since first test
+            // highest / lowest results 
+            // congrats on first test
+            // streak counter?
+            // 10, 25, 50, 100, 1000 test milestones
+            // did you know
+            // delete folder to restart
+            // use -i to prevent scores being saved
+            // facts idk
 
+            // "you cheated" message
         }
     }
 }
