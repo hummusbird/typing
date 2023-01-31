@@ -92,7 +92,7 @@ namespace typing
                             Console.Write(keystroke.KeyChar.ToString()); // write char
                         }
                         else
-                        { // TODO: flag for whether keystroke or prompt is displayed
+                        {
                             Console.ForegroundColor = ConsoleColor.Red; // misinput
                             Console.Write(autocorrect ? prompt[CountThroughPrompt] : keystroke.KeyChar.ToString()); // write red char on incorrect keystroke, and "correct" char if autocorrect
                             Misinputs++;
