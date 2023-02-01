@@ -59,6 +59,11 @@ class Program
                 case "-f":
                     if (args.Length >= pos + 2) { prompt = PromptGen.ExtractPromptFromFile(args[pos + 1]); }
                     break;
+
+                case "--help":
+                case "-h":
+                    printhelp();
+                    break;
             }
         }
 
@@ -122,5 +127,24 @@ class Program
                     break;
             }
         }
+    }
+
+    static void printhelp()
+    {
+        Console.WriteLine("\ntyping - a simple c# typing test and scorekeeper");
+        Console.WriteLine("------------------------------------------------\n");
+
+        Console.WriteLine("Arguments:\n");
+
+        Console.WriteLine("-h, --help                       This message");
+        Console.WriteLine("-r, --random                     Generates a prompt using randomly selected words from wordlist_10000.txt");
+        Console.WriteLine("-t [int], --timer [int]          Limit the test to [int] seconds");
+        Console.WriteLine("-l [int], --length [int]         Limit the test to [int] words");
+        Console.WriteLine("-i, --incognito                  Prevent saving of results - no files or data is overwritten");
+        Console.WriteLine("-g, --ghost                      Type overtop the prompt, instead of below");
+        Console.WriteLine("-a, --autocorrect,               Incorrectly inputted characters are displayed as the correct character, in red");
+        Console.WriteLine("-p [string], --prompt [string]   Specify a prompt to be used.");
+        Console.WriteLine("-f [file], --file [file]         Load prompt from file");
+        Environment.Exit(0);
     }
 }
