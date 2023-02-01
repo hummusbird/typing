@@ -12,6 +12,8 @@ class Program
         bool autocorrect = false;
         bool incognito = false;
 
+        bool newTest = true; // set to false to retry with the same settings
+
         foreach (string arg in args)
         {
             int pos = Array.FindIndex(args, v => v == arg);
@@ -60,35 +62,65 @@ class Program
             }
         }
 
-        // TODO: loop from here to bottom  
-
-        // ensures correct length even if length is defined after prompt
-        if (random) { prompt = PromptGen.GenerateRandomPromptFromWordlist(length); }
-        else { prompt = PromptGen.TrimPromptToLength(prompt, length); }
-
-        // TODO: interactive settings menu
-        // TODO: default settings .conf file
-
-        TypingTest test = new(prompt, timer, ghost, autocorrect);
-
-        if (String.IsNullOrEmpty(prompt)) { Console.WriteLine("Prompt cannot be empty."); }
-        else
+        while (true)
         {
+            if (newTest)
+            {
+                // ensures correct length even if length is defined after prompt
+                // this is rerun if newTest is true, to generate a new random prompt
+                if (random) { prompt = PromptGen.GenerateRandomPromptFromWordlist(length); }
+                else { prompt = PromptGen.TrimPromptToLength(prompt, length); }
+
+                newTest = false;
+            }
+
+            // TODO: interactive settings menu
+            // TODO: default settings .conf file
+
+            TypingTest test = new(prompt, timer, ghost, autocorrect);
+
+            if (String.IsNullOrEmpty(prompt)) { Console.WriteLine("Prompt cannot be empty."); Environment.Exit(1); }
+
             test.RunTest();
 
             Results.PrintStats(test);
 
-            if (!incognito) { Results.SaveStats(test); } // do not save results if -i arg set
+            Results.CompareAgainstTests(test);
+
+            if (!incognito) // do not save results if -i arg set
+            {
+                Results.SaveStats(test);
+            }
             else
             {
                 Console.ForegroundColor = ConsoleColor.DarkGray;
                 Console.WriteLine("\nincognito enabled - no results saved");
                 Console.ForegroundColor = ConsoleColor.White;
             }
+
+            Console.WriteLine("\n[any] Exit - [R] Retry - [N] New test");
+            Console.Write("> ");
+
+            string input = Console.ReadLine()!.ToLower();
+
+            switch (input)
+            {
+                case "new test":
+                case "new":
+                case "n":
+                    newTest = true;
+                    break;
+
+                case "retry":
+                case "r":
+                    Console.WriteLine("Retrying test...");
+                    break;
+
+                default:
+                    Console.WriteLine("Exiting...");
+                    Environment.Exit(0);
+                    break;
+            }
         }
-
-        Console.Write("\nPress any key to continue");
-
-        Console.ReadKey();
     }
 }

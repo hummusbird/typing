@@ -21,12 +21,18 @@ namespace typing
         public int CountThroughPrompt { get; private set; }    // keystrokes through the prompt, ignoring misinputs
         public double Misinputs { get; private set; }          // incorrect keystrokes
 
-        public TypingTest(string _prompt, int _timer, bool _ghost, bool _autocorrect)
+        public TypingTest(string _prompt, int _timer, bool _ghost, bool _autocorrect, double timetaken = 0, double keystrokecount = 0, int countthroughprompt = 0, double misinputs = 0)
         {
             prompt = _prompt;
             timer = _timer;
             ghost = _ghost;
             autocorrect = _autocorrect;
+
+            // used for deserialization
+            TimeTaken = timetaken;
+            KeystrokeCount = keystrokecount;
+            CountThroughPrompt = countthroughprompt;
+            Misinputs = misinputs;
         }
 
         public void RunTest()

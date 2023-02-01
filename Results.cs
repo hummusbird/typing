@@ -32,10 +32,71 @@ namespace typing
             }
         }
 
-        public static void CompareAgainstPB(TypingTest test)
+        public static void CompareAgainstTests(TypingTest test)
         {
-            // TODO: iterate through all files & find best scores
-            // TODO: use filename to compare
+            string[] files = Directory.GetFiles("typing-results");
+
+            if (files.Length <= 1) { Console.WriteLine("\nCongrats on completing your first test!"); return; }
+
+            List<TypingTest>? tests = new List<TypingTest>();
+
+            double numoflowerwpmtests = 0;
+            double numofloweraccurracytests = 0;
+
+            double HighestWPM = 0;
+            double LongestTest = 0;
+            double HighestAccuracy = 0;
+
+            foreach (string filename in files)
+            {
+                if (filename.EndsWith(".json"))
+                {
+                    using (StreamReader SR = new StreamReader(filename))
+                    {
+                        try
+                        {
+                            string json = SR.ReadToEnd();
+
+                            TypingTest jsontest = JsonConvert.DeserializeObject<TypingTest>(json)!;
+
+                            int wpm = (int)(((jsontest.KeystrokeCount - jsontest.Misinputs) / 5) / (jsontest.TimeTaken / 60));
+                            double accuracy = (double)((int)((jsontest.KeystrokeCount - jsontest.Misinputs) / jsontest.KeystrokeCount * 10000)) / 100;
+
+                            if (wpm > HighestWPM) { HighestWPM = wpm; }
+                            if (jsontest.CountThroughPrompt > LongestTest) { LongestTest = jsontest.CountThroughPrompt; }
+                            if (accuracy > HighestAccuracy) { HighestAccuracy = accuracy; }
+
+                            if ((int)(((test.KeystrokeCount - test.Misinputs) / 5) / (test.TimeTaken / 60)) > wpm) { numoflowerwpmtests++; }
+
+                            if ((double)((int)((test.KeystrokeCount - test.Misinputs) / test.KeystrokeCount * 10000)) / 100 > accuracy) { numofloweraccurracytests++; }
+
+                            tests!.Add(jsontest);
+                        }
+                        catch (Exception err)
+                        {
+                            Console.WriteLine(err);
+                        }
+                    }
+                }
+            }
+
+            Console.Write("\n");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine($"You were faster than {(double)((int)(numoflowerwpmtests / tests.Count) * 10000) / 100}% of your old tests.");
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.WriteLine($"{numoflowerwpmtests} tests had a WPM lower than {(int)(((test.KeystrokeCount - test.Misinputs) / 5) / (test.TimeTaken / 60))} out of {tests.Count}");
+            Console.ForegroundColor = ConsoleColor.DarkGreen;
+            Console.WriteLine($"Your highest speed was {HighestWPM} WPM");
+
+            Console.Write("\n");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine($"You were more accurate than {(numofloweraccurracytests / tests.Count) * 100}% of your old tests.");
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.WriteLine($"{numofloweraccurracytests} tests had an accuracy lower than {(double)((int)((test.KeystrokeCount - test.Misinputs) / test.KeystrokeCount * 10000)) / 100}% out of {tests.Count}");
+            Console.ForegroundColor = ConsoleColor.DarkGreen;
+            Console.WriteLine($"Your highest accuracy was {HighestAccuracy}%");
+
+            Console.ForegroundColor = ConsoleColor.White;
         }
 
         public static void PrintCoolInformationMessage()
