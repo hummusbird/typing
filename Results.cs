@@ -103,19 +103,16 @@ namespace typing
             Console.ForegroundColor = ConsoleColor.White;
         }
 
-        public static void PrintCoolInformationMessage()
-        {
-            // improvement since first test
-            // highest / lowest results 
-            // congrats on first test
-            // streak counter?
-            // 10, 25, 50, 100, 1000 test milestones
-            // did you know
-            // delete folder to restart
-            // use -i to prevent scores being saved
-            // facts idk
+        // improvement since first test
+        // highest / lowest results 
+        // congrats on first test
+        // streak counter?
+        // 10, 25, 50, 100, 1000 test milestones
+        // did you know
+        // delete folder to restart
+        // use -i to prevent scores being saved
+        // facts idk
 
-            // "you cheated" message
-        }
+        // "you cheated" message
     }
 }
