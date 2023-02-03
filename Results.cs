@@ -43,9 +43,12 @@ namespace typing
             double numoflowerwpmtests = 0;
             double numofloweraccurracytests = 0;
 
-            double HighestWPM = 0;
-            double LongestTest = 0;
-            double HighestAccuracy = 0;
+            int testwpm = (int)(((test.KeystrokeCount - test.Misinputs) / 5) / (test.TimeTaken / 60));
+            double testaccuracy = (double)((int)((test.KeystrokeCount - test.Misinputs) / test.KeystrokeCount * 10000)) / 100;
+
+            double HighestWPM = testwpm;
+            double LongestTest = test.CountThroughPrompt;
+            double HighestAccuracy = testaccuracy;
 
             foreach (string filename in files)
             {
@@ -66,9 +69,8 @@ namespace typing
                             if (jsontest.CountThroughPrompt > LongestTest) { LongestTest = jsontest.CountThroughPrompt; }
                             if (accuracy > HighestAccuracy) { HighestAccuracy = accuracy; }
 
-                            if ((int)(((test.KeystrokeCount - test.Misinputs) / 5) / (test.TimeTaken / 60)) > wpm) { numoflowerwpmtests++; }
-
-                            if ((double)((int)((test.KeystrokeCount - test.Misinputs) / test.KeystrokeCount * 10000)) / 100 > accuracy) { numofloweraccurracytests++; }
+                            if (testwpm > wpm) { numoflowerwpmtests++; }
+                            if (testaccuracy > accuracy) { numofloweraccurracytests++; }
 
                             tests!.Add(jsontest);
                         }
@@ -82,19 +84,21 @@ namespace typing
 
             Console.Write("\n");
             Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine($"You were faster than {(double)((int)(numoflowerwpmtests / tests.Count) * 10000) / 100}% of your old tests.");
+            Console.WriteLine($"You were faster than {(double)((int)((numoflowerwpmtests / tests.Count) * 10000)) / 100}% of your old tests.");
             Console.ForegroundColor = ConsoleColor.DarkYellow;
-            Console.WriteLine($"{numoflowerwpmtests} tests had a WPM lower than {(int)(((test.KeystrokeCount - test.Misinputs) / 5) / (test.TimeTaken / 60))} out of {tests.Count}");
+            Console.WriteLine($"{numoflowerwpmtests} out of {tests.Count} tests had a WPM lower than {testwpm}");
             Console.ForegroundColor = ConsoleColor.DarkGreen;
             Console.WriteLine($"Your highest speed was {HighestWPM} WPM");
 
             Console.Write("\n");
             Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine($"You were more accurate than {(numofloweraccurracytests / tests.Count) * 100}% of your old tests.");
+            Console.WriteLine($"You were more accurate than {(double)((int)((numofloweraccurracytests / tests.Count) * 10000)) / 100}% of your old tests.");
             Console.ForegroundColor = ConsoleColor.DarkYellow;
-            Console.WriteLine($"{numofloweraccurracytests} tests had an accuracy lower than {(double)((int)((test.KeystrokeCount - test.Misinputs) / test.KeystrokeCount * 10000)) / 100}% out of {tests.Count}");
+            Console.WriteLine($"{numofloweraccurracytests} out of {tests.Count} tests had an accuracy lower than {testaccuracy}%");
             Console.ForegroundColor = ConsoleColor.DarkGreen;
             Console.WriteLine($"Your highest accuracy was {HighestAccuracy}%");
+
+            if (LongestTest == test.CountThroughPrompt) { Console.WriteLine($"\nThis was your longest test so far at {LongestTest} characters!"); }
 
             Console.ForegroundColor = ConsoleColor.White;
         }
