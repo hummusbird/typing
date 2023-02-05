@@ -17,11 +17,14 @@ namespace typing
             Console.WriteLine($"MISINPUTS:  {test.Misinputs}/{test.KeystrokeCount}");
         }
 
+        // TODO: WINDOWS: fix directory creation
+        // TODO: WINDOWS: fix filename read/write
+
         public static void SaveStats(TypingTest test)
         {
             Console.WriteLine("\nSaving results...");
 
-            string filename = DateTime.Now.ToString().Replace("/", "-") + ".json";
+            string filename = DateTimeOffset.Now.ToUnixTimeMilliseconds() + ".json";
 
             if (!Directory.Exists("typing-results")) { Directory.CreateDirectory("typing-results"); } // create results folder if one doesn't exist
 
@@ -34,9 +37,11 @@ namespace typing
 
         public static void CompareAgainstTests(TypingTest test)
         {
+            if (!Directory.Exists("typing-results")) { Directory.CreateDirectory("typing-results"); }
+
             string[] files = Directory.GetFiles("typing-results");
 
-            if (files.Length <= 1) { Console.WriteLine("\nCongrats on completing your first test!"); return; }
+            if (files.Length < 1) { Console.WriteLine("\nCongrats on completing your first test!"); return; }
 
             List<TypingTest>? tests = new List<TypingTest>();
 

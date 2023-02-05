@@ -58,7 +58,7 @@ namespace typing
             // TODO: add space condition for extra / too few letters per word (maybe)
             // TODO: fix backspace going up a line (idk it seems to work for some reason now)
             // TODO: add redraw on screen size change (or just end the test)
-            // TODO: fix windows colour change on exit
+            // TODO: WINDOWS: fix colour change on exit (add exit handling)
 
             var regex = new Regex(@"[\x00 -\x7F]"); // valid ascii
 
