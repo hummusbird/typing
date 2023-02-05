@@ -17,9 +17,6 @@ namespace typing
             Console.WriteLine($"MISINPUTS:  {test.Misinputs}/{test.KeystrokeCount}");
         }
 
-        // TODO: WINDOWS: fix directory creation
-        // TODO: WINDOWS: fix filename read/write
-
         public static void SaveStats(TypingTest test)
         {
             Console.WriteLine("\nSaving results...");
