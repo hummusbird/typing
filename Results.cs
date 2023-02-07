@@ -36,9 +36,20 @@ namespace typing
         {
             if (!Directory.Exists("typing-results")) { Directory.CreateDirectory("typing-results"); }
 
-            string[] files = Directory.GetFiles("typing-results");
+            string[] files = Directory.GetFiles("typing-results", "*.json");
 
-            if (files.Length < 1) { Console.WriteLine("\nCongrats on completing your first test!"); return; }
+            int[] milestones = { 5, 10, 25, 50, 69, 100, 420, 1000, 10000 };
+
+            if (files.Length < 1) { Console.WriteLine("\nCongrats on completing your first test!"); return; } // prevent rest of stats being printed
+
+            if (milestones.Contains(files.Length + 1))
+            {
+                string suffix = "th";
+                if ((files.Length).ToString().EndsWith("1")) { suffix = "st"; }
+                else if ((files.Length).ToString().EndsWith("2")) { suffix = "nd"; }
+                else if ((files.Length).ToString().EndsWith("3")) { suffix = "rd"; }
+                Console.WriteLine($"\nCongratulations on beating your {files.Length + 1}{suffix} test!");
+            }
 
             List<TypingTest>? tests = new List<TypingTest>();
 
@@ -54,34 +65,32 @@ namespace typing
 
             foreach (string filename in files)
             {
-                if (filename.EndsWith(".json"))
+                using (StreamReader SR = new StreamReader(filename))
                 {
-                    using (StreamReader SR = new StreamReader(filename))
+                    try
                     {
-                        try
-                        {
-                            string json = SR.ReadToEnd();
+                        string json = SR.ReadToEnd();
 
-                            TypingTest jsontest = JsonConvert.DeserializeObject<TypingTest>(json)!;
+                        TypingTest jsontest = JsonConvert.DeserializeObject<TypingTest>(json)!;
 
-                            int wpm = (int)(((jsontest.KeystrokeCount - jsontest.Misinputs) / 5) / (jsontest.TimeTaken / 60));
-                            double accuracy = (double)((int)((jsontest.KeystrokeCount - jsontest.Misinputs) / jsontest.KeystrokeCount * 10000)) / 100;
+                        int wpm = (int)(((jsontest.KeystrokeCount - jsontest.Misinputs) / 5) / (jsontest.TimeTaken / 60));
+                        double accuracy = (double)((int)((jsontest.KeystrokeCount - jsontest.Misinputs) / jsontest.KeystrokeCount * 10000)) / 100;
 
-                            if (wpm > HighestWPM) { HighestWPM = wpm; }
-                            if (jsontest.CountThroughPrompt > LongestTest) { LongestTest = jsontest.CountThroughPrompt; }
-                            if (accuracy > HighestAccuracy) { HighestAccuracy = accuracy; }
+                        if (testwpm > wpm) { numoflowerwpmtests++; }
+                        if (testaccuracy > accuracy) { numofloweraccurracytests++; }
 
-                            if (testwpm > wpm) { numoflowerwpmtests++; }
-                            if (testaccuracy > accuracy) { numofloweraccurracytests++; }
+                        if (wpm > HighestWPM) { HighestWPM = wpm; }
+                        if (jsontest.CountThroughPrompt > LongestTest) { LongestTest = jsontest.CountThroughPrompt; }
+                        if (accuracy > HighestAccuracy) { HighestAccuracy = accuracy; }
 
-                            tests!.Add(jsontest);
-                        }
-                        catch (Exception err)
-                        {
-                            Console.WriteLine(err);
-                        }
+                        tests!.Add(jsontest);
+                    }
+                    catch (Exception err)
+                    {
+                        Console.WriteLine(err);
                     }
                 }
+
             }
 
             Console.Write("\n");

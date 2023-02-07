@@ -21,33 +21,25 @@ find the program inside `/bin/release/net7.0/linux-x64/publish/your-platform/`
 ## flags
 
 ```
---autocorrect
+Arguments:
 
-shows the correct character you should have typed, instead of what you did type
+-h, --help                       This message
 
---ghost
+-r, --random                     Generates a prompt using randomly selected words from wordlist_10000.txt
 
-you type overtop the prompt, instead of below
+-t [int], --timer [int]          Limit the test to [int] seconds
 
---incognito
+-l [int],--length [int]          Limit the test to [int] words
 
-disables saving of scores and results
+-i, --incognito                  Prevent saving of results - no files or data is overwritten
 
---random
+-g, --ghost                      Type overtop the prompt, instead of below
 
-generates a random prompt from a wordlist
+-a, --autocorrect,               Incorrectly inputted characters are displayed as the correct character, in red
 
---prompt "{string}"
+-p [string], --prompt [string]   Specify a prompt to be used.
 
-use {string} as your prompt
-
---timer {int}
-
-set a time limit 
-
---length {int}
-
-set a word length limit (defaults to 25 with --random)
+-f [file], --file [file]         Load prompt from file
 ```
 
 ## todo
