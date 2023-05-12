@@ -5,12 +5,15 @@ class Program
     static void Main(string[] args)
     {
         bool random = false;
-        int length = 0;
+        bool file = false;
+        string filename = "prompt.txt";
+        int length = 25; // default length
         string prompt = "the quick brown fox jumps over the lazy dog";
         int timer = 0;
         bool ghost = false;
         bool autocorrect = false;
         bool incognito = false;
+        string wordlist = "wordlist_10000.txt";
 
         bool newTest = true; // set to false to retry with the same settings
 
@@ -57,7 +60,16 @@ class Program
 
                 case "--file": // load prompt from file
                 case "-f":
-                    if (args.Length >= pos + 2) { prompt = PromptGen.ExtractPromptFromFile(args[pos + 1]); }
+                    if (args.Length >= pos + 2)
+                    {
+                        file = true;
+                        filename = args[pos + 1];
+                    }
+                    break;
+
+                case "--wordlist": // generate random prompt from wordlist
+                case "-w":
+                    if (args.Length >= pos + 2) { wordlist = args[pos + 1]; }
                     break;
 
                 case "--help":
@@ -73,9 +85,9 @@ class Program
             {
                 // ensures correct length even if length is defined after prompt
                 // this is rerun if newTest is true, to generate a new random prompt
-                if (random) { prompt = PromptGen.GenerateRandomPromptFromWordlist(length); }
+                if (file) { prompt = PromptGen.ExtractPromptFromFile(filename); }
+                else if (random) { prompt = PromptGen.GenerateRandomPromptFromWordlist(length, wordlist); }
                 else { prompt = PromptGen.TrimPromptToLength(prompt, length); }
-
                 newTest = false;
             }
 
@@ -145,6 +157,7 @@ class Program
         Console.WriteLine("-a, --autocorrect,               Incorrectly inputted characters are displayed as the correct character, in red");
         Console.WriteLine("-p [string], --prompt [string]   Specify a prompt to be used.");
         Console.WriteLine("-f [file], --file [file]         Load prompt from file");
+        Console.WriteLine("-w, --wordlist [string],         Use with --random to specify a wordlist file to read from");
         Environment.Exit(0);
     }
 }

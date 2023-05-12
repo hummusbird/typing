@@ -60,7 +60,7 @@ namespace typing
             double testaccuracy = (double)((int)((test.KeystrokeCount - test.Misinputs) / test.KeystrokeCount * 10000)) / 100;
 
             double HighestWPM = testwpm;
-            double LongestTest = test.CountThroughPrompt;
+            double LongestTest = 0;
             double HighestAccuracy = testaccuracy;
 
             foreach (string filename in files)
@@ -109,19 +109,16 @@ namespace typing
             Console.ForegroundColor = ConsoleColor.DarkGreen;
             Console.WriteLine($"Your highest accuracy was {HighestAccuracy}%");
 
-            if (LongestTest == test.CountThroughPrompt) { Console.WriteLine($"\nThis was your longest test so far at {LongestTest} characters!"); }
+            if (LongestTest == test.CountThroughPrompt) { Console.WriteLine($"\nThis tied for your longest test, at {LongestTest} characters!"); }
+            else if (LongestTest < test.CountThroughPrompt) { Console.WriteLine($"\nThis was your longest test, at {LongestTest} characters!"); }
 
             Console.ForegroundColor = ConsoleColor.White;
         }
 
         // improvement since first test
-        // highest / lowest results 
-        // congrats on first test
         // streak counter?
-        // 10, 25, 50, 100, 1000 test milestones
         // did you know
         // delete folder to restart
-        // use -i to prevent scores being saved
         // facts idk
 
         // "you cheated" message

@@ -2,18 +2,21 @@ namespace typing
 {
     static class PromptGen
     {
-        public static string GenerateRandomPromptFromWordlist(int length, string wordlist = "wordlist_10000.txt")
+        public static string GenerateRandomPromptFromWordlist(int length, string wordlist)
         {
             var rand = new Random();
-
-            if (length <= 0) { length = 25; } // default random length
 
             string[] words = System.IO.File.ReadAllLines(wordlist);
             string output = "";
 
+            length = length > words.Length ? words.Length : length; // ensure length is less than words max
+
+            Console.WriteLine(length);
+            Console.WriteLine(words.Length);
+
             for (int i = 0; i < length; i++)
             {
-                output += words[rand.Next(10000)] + " ";
+                output += words[rand.Next(words.Length)] + " ";
             }
 
             return output.Trim();

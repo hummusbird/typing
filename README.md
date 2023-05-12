@@ -44,8 +44,4 @@ Arguments:
 
 ## todo
 
-- add --file flag for wordlists / prompts
-
 - fix windows exit handling
-
-- save tests & compare PBs
