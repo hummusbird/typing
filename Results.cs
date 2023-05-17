@@ -110,7 +110,7 @@ namespace typing
             Console.WriteLine($"Your highest accuracy was {HighestAccuracy}%");
 
             if (LongestTest == test.CountThroughPrompt) { Console.WriteLine($"\nThis tied for your longest test, at {LongestTest} characters!"); }
-            else if (LongestTest < test.CountThroughPrompt) { Console.WriteLine($"\nThis was your longest test, at {LongestTest} characters!"); }
+            else if (LongestTest < test.CountThroughPrompt) { Console.WriteLine($"\nThis was your longest test, at {test.CountThroughPrompt} characters!"); }
 
             Console.ForegroundColor = ConsoleColor.White;
         }
