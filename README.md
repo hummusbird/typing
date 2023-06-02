@@ -14,9 +14,9 @@ open a command line, and run the program with the flags you'd like!
 
 install dotnet runtime 7.0
 
-run `build.bat` on windows or `build.sh` on linux
+run `build.bat` on windows, `build_mac.sh` on macOS or `build.sh` on linux
 
-find the program inside `/bin/release/net7.0/linux-x64/publish/your-platform/`
+find the binary inside `/bin/release/net7.0/[YOUR-PLATFORM]/publish/[YOUR-PLATFORM]/`
 
 ## flags
 
@@ -45,3 +45,4 @@ Arguments:
 ## todo
 
 - fix windows exit handling
+- check end line terminal fallback on specific terminals (seems fine on urxvt but not macOS terminal)
