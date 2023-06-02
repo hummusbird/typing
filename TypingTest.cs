@@ -7,10 +7,10 @@ namespace typing
     {
         // possibly split this into two objects, one for timed one for length
 
-        public readonly string prompt;         // for length tests 
-        public readonly int timer;             // for timed tests
-        readonly bool ghost;            // prompt printing setting
-        readonly bool autocorrect;      // when incorrect char entered, show correct char in red
+        public readonly string prompt;          // for length tests 
+        public readonly int timer;              // for timed tests
+        readonly bool ghost;                    // prompt printing setting
+        readonly bool autocorrect;              // when incorrect char entered, show correct char in red
 
         List<char> UserKeystrokes = new List<char>(); // TODO: make keystroke object containing timestamp + char for more detailed stats
 
