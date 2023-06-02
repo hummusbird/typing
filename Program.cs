@@ -10,8 +10,8 @@ class Program
         int length = 25; // default length
         string prompt = "the quick brown fox jumps over the lazy dog";
         int timer = 0;
-        bool ghost = false;
-        bool autocorrect = false;
+        bool ghost = true;
+        bool autocorrect = true;
         bool incognito = false;
         string wordlist = "wordlist_10000.txt";
 
